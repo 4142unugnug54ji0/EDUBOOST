@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quarter 3 Week 3 - LAS</title>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+
+  min-height:100vh;
+
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.75),
+      rgba(255,255,255,0.75)
+    ),
+    url("bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+
+.header{
+  background:#2c3e50;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.header h2{
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-shadow:3px 3px 8px rgba(0,0,0,0.4);
+}
+
+/* DEFAULT BUTTON (for forms only) */
+.form-btn {
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(45deg,#1dd1a1,#10ac84);
+  color:white;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.form-btn:hover {
+  transform:scale(1.05);
+}
+
+/* HEADER BUTTON (FIXED SIZE) */
+/* HEADER 3D BACK BUTTON */
+.header button{
+  width:auto;
+  padding:10px 20px;
+
+  border:none;
+  border-radius:14px;
+
+  background:linear-gradient(to bottom, #4b6cb7, #34495e);
+  color:white;
+
+  font-size:15px;
+  font-weight:bold;
+  letter-spacing:1px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 5px 0 #22313f,
+    0 8px 12px rgba(0,0,0,0.25);
+
+  transition:all 0.15s ease;
+
+  position:relative;
+}
+
+/* GLOSS EFFECT */
+.header button::before{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:5%;
+  width:90%;
+  height:35%;
+  border-radius:12px;
+  background:rgba(255,255,255,0.25);
+}
+
+/* HOVER */
+.header button:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 7px 0 #22313f,
+    0 12px 18px rgba(0,0,0,0.3);
+}
+
+/* PUSH EFFECT */
+.header button:active{
+  transform:translateY(4px);
+
+  box-shadow:
+    0 1px 0 #22313f,
+    0 3px 6px rgba(0,0,0,0.25);
+}
+
+.container{
+  padding:20px;
+}
+
+/* INSTRUCTIONS */
+.instructions{
+  background:#f8f8f8;
+  padding:35px;
+  border-radius:
+      40px 60px 50px 70px /
+      50px 40px 60px 40px;
+
+  margin-bottom:30px;
+
+  box-shadow:
+      10px 10px 0 #7fd6df,
+      0 8px 20px rgba(0,0,0,0.15);
+
+  position:relative;
+
+  font-size:24px;
+  font-weight:700;
+  color:#5c4b2f;
+}
+
+.instructions::before{
+  content:"";
+  position:absolute;
+  inset:15px;
+  border:4px dashed #d8a106;
+  border-radius:
+      35px 55px 45px 65px /
+      45px 35px 55px 35px;
+}
+
+/* QUESTION CARD */
+.card{
+    width:70%;
+    max-width:1200px;
+    min-height:300px;
+
+    margin:auto auto 30px;
+
+    padding:50px;
+
+    background:#f8f8f8;
+
+    border-radius:
+        60px 90px 70px 100px /
+        80px 70px 90px 60px;
+
+    position:relative;
+
+    box-shadow:
+        12px 12px 0 #7fd6df,
+        0 8px 20px rgba(0,0,0,0.15);
+}
+
+.card::before{
+    content:"";
+
+    position:absolute;
+    inset:18px;
+
+    border:4px dashed #d8a106;
+
+    border-radius:
+        55px 85px 65px 95px /
+        75px 65px 85px 55px;
+
+    pointer-events:none;
+}
+
+.question{
+  font-size:34px;
+  font-weight:800;
+  color:#5c4b2f;
+  line-height:1.7;
+}
+
+/* OPTIONS */
+.options{
+  display:flex;
+  gap:15px;
+  margin-top:20px;
+}
+
+/* OPTION BUTTONS */
+/* OPTION BUTTONS */
+.option-btn{
+  flex:1;
+
+  padding:22px;
+
+  border:none;
+  border-radius:20px;
+
+  font-size:50px;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+
+  cursor:pointer;
+
+  color:#000;
+
+  box-shadow:
+    0 8px 0 rgba(0,0,0,0.2),
+    0 12px 20px rgba(0,0,0,0.2);
+
+  transition:all 0.15s ease;
+}
+
+/* GREEN BUTTON */
+.smile{
+  background:linear-gradient(to bottom, #2ecc71, #27ae60);
+}
+
+/* YELLOW BUTTON */
+.sad{
+  background:linear-gradient(to bottom, #ff4d4d, #c0392b);
+}
+
+/* HOVER */
+.option-btn:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 6px 0 rgba(0,0,0,0.2),
+    0 10px 18px rgba(0,0,0,0.22);
+}
+
+/* PUSH */
+.option-btn:active{
+  transform:translateY(8px);
+  box-shadow:
+    0 0px 0 rgba(0,0,0,0.2),
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* SELECTED = PUSHED DOWN EFFECT */
+.selected{
+  transform:translateY(8px) !important;
+
+  box-shadow:
+    0 0px 0 rgba(0,0,0,0.2),
+    0 4px 10px rgba(0,0,0,0.18) !important;
+}
+
+/* GIVE POINTS BUTTON */
+.score-btn{
+  width:60%;
+  display:block;
+  margin:30px auto 0;
+
+  background:linear-gradient(to bottom,#f39c12,#d68910);
+
+  padding:22px;
+
+  border:none;
+  border-radius:20px;
+
+  font-size:24px;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+
+  color:white;
+
+  box-shadow:
+    0 8px 0 #b9770e,
+    0 12px 20px rgba(0,0,0,0.2);
+
+  cursor:pointer;
+}
+
+/* HOVER */
+.score-btn:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 6px 0 #b9770e,
+    0 10px 18px rgba(0,0,0,0.22);
+}
+
+/* PUSH */
+.score-btn:active{
+  transform:translateY(8px);
+
+  box-shadow:
+    0 0px 0 #b9770e,
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+
+  background:rgba(0,0,0,0.6);
+
+  display:none;
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-content{
+  background:white;
+
+  padding:25px;
+
+  border-radius:22px;
+
+  width:320px;
+  max-height:400px;
+
+  overflow:auto;
+
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* STUDENT BUTTON */
+.student-btn{
+  width:100%;
+
+  margin:8px 0;
+
+  background:linear-gradient(to bottom, #ffffff, #f5e4bc);
+
+  padding:18px;
+
+  border:none;
+  border-radius:18px;
+
+  font-size:20px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  color:#5c4b2f;
+
+  box-shadow:
+    0 6px 0 #d8c49a,
+    0 10px 18px rgba(0,0,0,0.2);
+
+  transition:all 0.15s ease;
+}
+
+/* HOVER */
+.student-btn:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 4px 0 #d8c49a,
+    0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* PUSH */
+.student-btn:active{
+  transform:translateY(6px);
+
+  box-shadow:
+    0 0px 0 #d8c49a,
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* CLOSE BUTTON */
+.close-btn{
+  width:100%;
+
+  margin-top:15px;
+
+  background:linear-gradient(to bottom, #ffffff, #f5e4bc);
+
+  padding:18px;
+
+  border:none;
+  border-radius:18px;
+
+  font-size:20px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  color:#5c4b2f;
+
+  box-shadow:
+    0 6px 0 #d8c49a,
+    0 10px 18px rgba(0,0,0,0.2);
+
+  transition:all 0.15s ease;
+}
+
+/* HOVER */
+.close-btn:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 4px 0 #d8c49a,
+    0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* PUSH */
+.close-btn:active{
+  transform:translateY(6px);
+
+  box-shadow:
+    0 0px 0 #d8c49a,
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .card{
+    width:90%;
+    padding:35px;
+    min-height:auto;
+  }
+
+  .question{
+    font-size:28px;
+  }
+
+  .tabs button{
+    font-size:22px;
+  }
+
+  .score-btn{
+    width:100%;
+  }
+
+  .options{
+    flex-direction:column;
+  }
+}
+.tabs{
+  display:flex;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.tabs button{
+  flex:1;
+  padding:22px;
+  font-size:28px;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+  background:linear-gradient(to bottom,#ffffff,#f5e4bc);
+  color:#5c4b2f;
+  box-shadow:
+    0 8px 0 #d8c49a,
+    0 12px 20px rgba(0,0,0,0.2);
+}
+
+.tabs button.active{
+  transform:translateY(8px);
+  box-shadow:
+    0 0px 0 #d8c49a,
+    0 4px 10px rgba(0,0,0,0.18);
+}
+.lesson{
+  display:none;
+}
+
+.lesson.active{
+  display:block;
+}
+
+.part.hidden{
+  display:none;
+}
+
+.nav-buttons{
+
+  position:fixed;
+  top:50%;
+  left:0;
+
+  width:100%;
+
+  transform:translateY(-50%);
+
+  pointer-events:none;
+}
+
+.nav-buttons button{
+
+  position:absolute;
+
+  width:180px;
+
+  padding:18px;
+
+  border:none;
+  border-radius:18px;
+
+  font-size:22px;
+  font-weight:900;
+
+  background:linear-gradient(to bottom,#4b6cb7,#34495e);
+  color:white;
+
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  box-shadow:
+    0 6px 0 #22313f,
+    0 10px 15px rgba(0,0,0,.25);
+}
+
+.nav-buttons button:first-child{
+  left:20px;
+}
+
+.nav-buttons button:last-child{
+  right:20px;
+}
+.firework{
+    position:fixed;
+    width:20px;
+    height:20px;
+    pointer-events:none;
+    z-index:99999;
+    animation:explode 0.8s ease-out forwards;
+}
+@keyframes explode{
+    0%{
+        transform:translate(0,0) scale(1);
+        opacity:1;
+    }
+    100%{
+        transform:
+            translate(var(--x),var(--y))
+            scale(0);
+        opacity:0;
+    }
+}
+.tabs button{
+  flex:1;
+
+  padding:20px;
+
+  border:none;
+  border-radius:20px;
+
+  font-size:24px;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+
+  cursor:pointer;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #ffffff,
+      #f5e4bc
+    );
+
+  color:#5c4b2f;
+
+  box-shadow:
+    0 8px 0 #d8c49a,
+    0 12px 20px rgba(0,0,0,.2);
+
+  transition:all .15s ease;
+}
+
+/* HOVER */
+.tabs button:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 6px 0 #d8c49a,
+    0 10px 18px rgba(0,0,0,.22);
+}
+
+/* PUSH */
+.tabs button:active{
+  transform:translateY(8px);
+
+  box-shadow:
+    0 0px 0 #d8c49a,
+    0 4px 10px rgba(0,0,0,.18);
+}
+
+.nav-buttons button{
+  position:absolute;
+
+  width:180px;
+  padding:18px;
+
+  border:none;
+  border-radius:18px;
+
+  font-size:22px;
+  font-weight:900;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #4b6cb7,
+      #34495e
+    );
+
+  color:white;
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  box-shadow:
+    0 8px 0 #22313f,
+    0 12px 20px rgba(0,0,0,.2);
+
+  transition:all .15s ease;
+}
+
+/* HOVER */
+.nav-buttons button:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 6px 0 #22313f,
+    0 10px 18px rgba(0,0,0,.22);
+}
+
+/* PUSH */
+.nav-buttons button:active{
+  transform:translateY(8px);
+
+  box-shadow:
+    0 0px 0 #22313f,
+    0 4px 10px rgba(0,0,0,.18);
+}
+textarea{
+  width:99%;
+  height:80px;
+  margin-top:10px;
+  padding:10px;
+  font-size:16px;
+  border-radius:10px;
+  border:2px solid #ccc;
+}
+
+input{
+  width:99%;
+  padding:12px;
+  margin-top:10px;
+  font-size:18px;
+  border-radius:10px;
+  border:2px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h2>📘 Quarter 3 Week 3 - LAS</h2>
+<button onclick="goBack(this)">⬅ Back</button>
+</div>
+
+<div class="container">
+
+<div class="tabs">
+  <button class="active" onclick="showPart(1,this)">📅 Day 1</button>
+  <button onclick="showPart(2,this)">📅 Day 2</button>
+  <button onclick="showPart(3,this)">📅 Day 3</button>
+  <button onclick="showPart(4,this)">📅 Day 4</button>
+</div>
+
+<!-- ================= DAY 1 ================= -->
+<div id="part1" class="part">
+
+<div class="lesson active">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct word to complete the sentence.
+<br><br>
+1. I like to ______ books before bedtime.
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">read</button>
+<button class="option-btn" onclick="selectAnswer(this)">team</button>
+<button class="option-btn" onclick="selectAnswer(this)">bean</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+<div class="lesson">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct word to complete the sentence.
+<br><br>
+2. She put a red ______ on her bracelet.
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">bead</button>
+<button class="option-btn" onclick="selectAnswer(this)">bean</button>
+<button class="option-btn" onclick="selectAnswer(this)">team</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+<div class="lesson">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct word to complete the sentence.
+<br><br>
+3. My room is clean and ______ today.
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">neat</button>
+<button class="option-btn" onclick="selectAnswer(this)">read</button>
+<button class="option-btn" onclick="selectAnswer(this)">bean</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+<div class="lesson">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct word to complete the sentence.
+<br><br>
+4. I planted a ______ in the garden.
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">bean</button>
+<button class="option-btn" onclick="selectAnswer(this)">bead</button>
+<button class="option-btn" onclick="selectAnswer(this)">team</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+<div class="lesson">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct word to complete the sentence.
+<br><br>
+5. Our ______ won the game!
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">team</button>
+<button class="option-btn" onclick="selectAnswer(this)">read</button>
+<button class="option-btn" onclick="selectAnswer(this)">bean</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+</div>
+
+<!-- ================= DAY 2 ================= -->
+<div id="part2" class="part hidden">
+
+<div class="lesson active">
+<div class="card">
+<div class="question">
+📌 Instructions: Choose the correct possessive pronoun.
+<br><br>
+1. The house is their house. The house is ____.
+</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">theirs</button>
+<button class="option-btn" onclick="selectAnswer(this)">they're</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div>
+</div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct possessive pronoun.<br><br>2. This book is my book. This is ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">mine</button>
+<button class="option-btn" onclick="selectAnswer(this)">my</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct possessive pronoun.<br><br>3. The chair is your chair. That is ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">yours</button>
+<button class="option-btn" onclick="selectAnswer(this)">your</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct possessive pronoun.<br><br>4. This pencil is my pencil. This is ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">mine</button>
+<button class="option-btn" onclick="selectAnswer(this)">my</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct possessive pronoun.<br><br>5. Those bags are their bags. Those are ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">theirs</button>
+<button class="option-btn" onclick="selectAnswer(this)">there</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+</div>
+
+<!-- ================= DAY 3 ================= -->
+<div id="part3" class="part hidden">
+
+<div class="lesson active"><div class="card">
+<div class="question">📌 Instructions: Choose the correct ee/ea word.<br><br>1. Choose correct word.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">seat</button>
+<button class="option-btn" onclick="selectAnswer(this)">set</button>
+<button class="option-btn" onclick="selectAnswer(this)">sat</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct ee/ea word.<br><br>2. Choose correct word.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">tree</button>
+<button class="option-btn" onclick="selectAnswer(this)">tre</button>
+<button class="option-btn" onclick="selectAnswer(this)">tra</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct ee/ea word.<br><br>3. Choose correct word.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">read</button>
+<button class="option-btn" onclick="selectAnswer(this)">rad</button>
+<button class="option-btn" onclick="selectAnswer(this)">rid</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct ee/ea word.<br><br>4. Choose correct word.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">meat</button>
+<button class="option-btn" onclick="selectAnswer(this)">met</button>
+<button class="option-btn" onclick="selectAnswer(this)">mat</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct ee/ea word.<br><br>5. Choose correct word.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">bead</button>
+<button class="option-btn" onclick="selectAnswer(this)">bad</button>
+<button class="option-btn" onclick="selectAnswer(this)">bed</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+</div>
+
+<!-- ================= DAY 4 ================= -->
+<div id="part4" class="part hidden">
+
+<div class="lesson active"><div class="card">
+<div class="question">📌 Instructions: Choose the correct word.<br><br>1. This is ____ book.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">my</button>
+<button class="option-btn" onclick="selectAnswer(this)">mine</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct word.<br><br>2. No, it is not yours. It is ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">mine</button>
+<button class="option-btn" onclick="selectAnswer(this)">my</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct word.<br><br>3. ____ the owner of that bag?</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">Who is</button>
+<button class="option-btn" onclick="selectAnswer(this)">What is</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct word.<br><br>4. It is ____ phone.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">her</button>
+<button class="option-btn" onclick="selectAnswer(this)">hers</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+<div class="lesson"><div class="card">
+<div class="question">📌 Instructions: Choose the correct word.<br><br>5. That book is ____.</div>
+<div class="options">
+<button class="option-btn" onclick="selectAnswer(this)">theirs</button>
+<button class="option-btn" onclick="selectAnswer(this)">their</button>
+</div>
+<button class="score-btn" onclick="openModal()">⭐ Give 10 Points</button>
+</div></div>
+
+</div>
+
+<div class="nav-buttons">
+  <button onclick="prevLesson(event)">⬅ Previous</button>
+  <button onclick="nextLesson(event)">Next ➡</button>
+</div>
+
+</div>
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h3>Select Student</h3>
+    <div id="studentList"></div>
+    <button class="close-btn" onclick="closeModal()">✖ Close</button>
+  </div>
+</div>
+
+<script>
+/* CORRECT ANSWERS */
+/* CHANGE THESE MANUALLY */
+const answers = {
+  part1: [0,0,0,0,0],
+  part2: [0,0,0,0,0],
+  part3: [0,0,0,0,0],
+  part4: [0,0,0,0,0]
+};
+/* FIREBASE */
+const firebaseConfig = {
+  apiKey: "AIzaSyD46KkaPIAZEfermrLeTs14LBaWLr_M_8s",
+  databaseURL: "https://readingapp-c4818-default-rtdb.firebaseio.com",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+/* LOAD STUDENTS */
+function loadStudents(){
+
+  const list = document.getElementById("studentList");
+
+  db.ref("students").on("value", snap=>{
+
+    list.innerHTML = "";
+
+    snap.forEach(child=>{
+
+      const data = child.val();
+
+      const btn = document.createElement("button");
+      btn.className = "student-btn";
+      btn.innerText = data.name;
+
+      btn.onclick = () => givePoints(child.key);
+
+      list.appendChild(btn);
+
+    });
+
+  });
+
+}
+
+loadStudents();
+
+/* MODAL */
+function openModal(){
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+/* GIVE POINTS */
+function givePoints(id){
+
+  const ref = db.ref("students/" + id);
+
+  ref.once("value").then(snap=>{
+
+    const current = snap.val().score || 0;
+
+    ref.update({
+      score: current + 10
+    });
+
+    alert("✅ +10 points given!");
+    closeModal();
+
+  });
+
+}
+
+/* SELECT ANSWER */
+function selectAnswer(btn){
+
+  const studentLogged =
+      localStorage.getItem("studentLoggedIn");
+
+  if(!studentLogged){
+
+      const parent = btn.parentElement;
+
+      parent.querySelectorAll("button")
+        .forEach(b =>
+          b.classList.remove("selected")
+        );
+
+      btn.classList.add("selected");
+
+      playEffects(btn);
+      return;
+  }
+
+  const studentName =
+      localStorage.getItem("studentName");
+
+  const part =
+      document.querySelector(
+        ".part:not(.hidden)"
+      ).id;
+
+  const key =
+      studentName + "_" +
+      part + "_" +
+      currentLesson;
+
+  if(localStorage.getItem(key)){
+
+      alert("You already answered this question.");
+      return;
+  }
+
+  pendingButton = btn;
+
+  document.getElementById(
+      "answerModal"
+  ).style.display = "flex";
+}
+
+function closeAnswerModal(){
+  document.getElementById(
+      "answerModal"
+  ).style.display = "none";
+}
+
+function confirmAnswer(){
+
+  document.getElementById(
+      "answerModal"
+  ).style.display = "none";
+
+  if(!pendingButton) return;
+
+  const btn = pendingButton;
+
+  playEffects(btn);
+
+  const parent =
+      btn.parentElement;
+
+  parent.querySelectorAll("button")
+    .forEach(b =>
+      b.classList.remove("selected")
+    );
+
+  btn.classList.add("selected");
+
+  const studentName =
+      localStorage.getItem("studentName");
+
+  const part =
+      document.querySelector(
+        ".part:not(.hidden)"
+      ).id;
+
+  const key =
+      studentName + "_" +
+      part + "_" +
+      currentLesson;
+
+  localStorage.setItem(
+      key,
+      "answered"
+  );
+
+  checkAnswer(btn);
+
+  pendingButton = null;
+}
+
+function checkAnswer(btn){
+
+    const part =
+      document.querySelector(
+        ".part:not(.hidden)"
+      ).id;
+
+    const buttons =
+      [...btn.parentElement.children];
+
+    const selected =
+      buttons.indexOf(btn);
+
+    const correct =
+      answers[part][currentLesson];
+
+    if(selected !== correct){
+
+        alert("❌ Wrong answer.");
+        return;
+    }
+
+    const studentName =
+        localStorage.getItem(
+          "studentName"
+        );
+
+    db.ref("students")
+      .once("value")
+      .then(snap=>{
+
+        snap.forEach(child=>{
+
+          const data = child.val();
+
+          if(data.name === studentName){
+
+              const score =
+                  data.score || 0;
+
+              db.ref(
+                "students/" +
+                child.key
+              ).update({
+                score: score + 10
+              });
+
+              alert(
+                "Correct! +10 points"
+              );
+          }
+        });
+
+      });
+}
+
+/* =========================
+   PART / LESSON NAVIGATION
+   ========================= */
+
+let currentLesson = 0;
+let pendingButton = null;
+
+function showPart(part, btn){
+
+    if(btn){
+      playEffects(btn);
+    }
+
+    setTimeout(() => {
+
+        document.querySelectorAll(".part")
+        .forEach(d => d.classList.add("hidden"));
+
+        document
+          .getElementById("part"+part)
+          .classList.remove("hidden");
+
+        document.querySelectorAll(".tabs button")
+          .forEach(b => b.classList.remove("active"));
+
+        if(btn){
+          btn.classList.add("active");
+        }else{
+          document.querySelectorAll(".tabs button")[part-1]
+            .classList.add("active");
+        }
+
+        currentLesson = 0;
+
+        const currentPart =
+          document.getElementById("part"+part);
+
+        const lessons =
+          currentPart.querySelectorAll(".lesson");
+
+        lessons.forEach(l =>
+          l.classList.remove("active")
+        );
+
+        if(lessons.length > 0){
+          lessons[0].classList.add("active");
+        }
+
+    }, btn ? 150 : 0);
+}
+
+function getCurrentDay(){
+
+  return document.querySelector(
+    ".part:not(.hidden)"
+  );
+
+}
+
+function showLesson(index){
+
+  const currentPart = getCurrentDay();
+
+  if(!currentPart) return;
+
+  const lessons =
+    currentPart.querySelectorAll(".lesson");
+
+  if(index < 0){
+    index = lessons.length - 1;
+  }
+
+  if(index >= lessons.length){
+    index = 0;
+  }
+
+  lessons.forEach(lesson =>
+    lesson.classList.remove("active")
+  );
+
+  lessons[index].classList.add("active");
+
+  currentLesson = index;
+}
+
+function playEffects(element){
+
+  const sound =
+    document.getElementById("clickSound");
+
+  if(sound){
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play();
+  }
+
+  if(!element) return;
+
+  const rect =
+    element.getBoundingClientRect();
+
+  const stars =
+    ["⭐","🌟","✨","💫"];
+
+  for(let i=0;i<35;i++){
+
+    const particle =
+      document.createElement("div");
+
+    particle.className = "firework";
+
+    particle.innerHTML =
+      stars[
+        Math.floor(
+          Math.random() * stars.length
+        )
+      ];
+
+    particle.style.fontSize =
+      (18 + Math.random()*16) + "px";
+
+    particle.style.color =
+      `hsl(${Math.random()*360},100%,60%)`;
+
+    particle.style.left =
+      (rect.left + rect.width/2) + "px";
+
+    particle.style.top =
+      (rect.top + rect.height/2) + "px";
+
+    const angle =
+      Math.random() * 360;
+
+    const distance =
+      80 + Math.random()*120;
+
+    particle.style.setProperty(
+      "--x",
+      Math.cos(angle*Math.PI/180)
+      * distance + "px"
+    );
+
+    particle.style.setProperty(
+      "--y",
+      Math.sin(angle*Math.PI/180)
+      * distance + "px"
+    );
+
+    document.body.appendChild(
+      particle
+    );
+
+    setTimeout(()=>{
+      particle.remove();
+    },800);
+  }
+}
+
+function nextLesson(e){
+    playEffects(e.currentTarget);
+
+    setTimeout(()=>{
+        showLesson(currentLesson + 1);
+    },150);
+}
+
+function prevLesson(e){
+    playEffects(e.currentTarget);
+
+    setTimeout(()=>{
+        showLesson(currentLesson - 1);
+    },150);
+}
+
+/* INITIALIZE */
+window.onload = function(){
+
+  showPart(1);
+
+  const studentLogged =
+      localStorage.getItem("studentLoggedIn");
+
+  if(studentLogged === "true"){
+
+      document
+        .querySelectorAll(".score-btn")
+        .forEach(btn=>{
+            btn.style.display = "none";
+        });
+  }
+};
+
+/* BACK BUTTON */
+function goBack(btn){
+  playEffects(btn);
+
+  setTimeout(()=>{
+    window.location.href="quarter3week3.html";
+  },1200);
+}
+</script>
+<div id="answerModal" class="modal">
+  <div class="modal-content">
+    <h3>Final Answer?</h3>
+    <p>Are you sure this is your final answer?</p>
+
+    <button
+      class="student-btn"
+      onclick="confirmAnswer()">
+      ✅ Yes
+    </button>
+
+    <button
+      class="close-btn"
+      onclick="closeAnswerModal()">
+      ❌ No
+    </button>
+  </div>
+</div>
+<audio id="clickSound" preload="auto">
+  <source src="button-sound-effect.mp3" type="audio/mpeg">
+</audio>
+<script src="sidebar.js?v=20261108-background-music-v2"></script>
+</body>
+</html>

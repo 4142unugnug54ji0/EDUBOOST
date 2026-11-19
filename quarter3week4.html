@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quarter 3 - Week 4</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+
+  min-height:100vh;
+
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.75),
+      rgba(255,255,255,0.75)
+    ),
+    url("bg.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+h2{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  font-size:24px;
+  font-weight:800;
+  color:white;
+  text-shadow:3px 3px 10px rgba(0,0,0,0.5);
+}
+.header{
+  background:#2c3e50;
+  color:white;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+}
+
+/* DEFAULT BUTTON (for forms only) */
+.form-btn {
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  border-radius:12px;
+  border:none;
+  background:linear-gradient(45deg,#1dd1a1,#10ac84);
+  color:white;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.form-btn:hover {
+  transform:scale(1.05);
+}
+
+/* HEADER BUTTON (FIXED SIZE) */
+/* HEADER 3D BACK BUTTON */
+.header button{
+  width:auto;
+  padding:10px 20px;
+
+  border:none;
+  border-radius:14px;
+
+  background:linear-gradient(to bottom, #4b6cb7, #34495e);
+  color:white;
+
+  font-size:15px;
+  font-weight:bold;
+  letter-spacing:1px;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 5px 0 #22313f,
+    0 8px 12px rgba(0,0,0,0.25);
+
+  transition:all 0.15s ease;
+
+  position:relative;
+}
+
+/* GLOSS EFFECT */
+.header button::before{
+  content:"";
+  position:absolute;
+  top:3px;
+  left:5%;
+  width:90%;
+  height:35%;
+  border-radius:12px;
+  background:rgba(255,255,255,0.25);
+}
+
+/* HOVER */
+.header button:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 7px 0 #22313f,
+    0 12px 18px rgba(0,0,0,0.3);
+}
+
+/* PUSH EFFECT */
+.header button:active{
+  transform:translateY(4px);
+
+  box-shadow:
+    0 1px 0 #22313f,
+    0 3px 6px rgba(0,0,0,0.25);
+}
+
+.container{
+  padding:20px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:25px;
+}
+
+/* 3D PUSH CARD */
+.card{
+  background:linear-gradient(to bottom,#ffffff,#f5e4bc);
+
+  padding:40px;
+  border-radius:22px;
+
+  text-align:center;
+
+  font-size:30px;
+  font-weight:900;
+  font-family:'Poppins',sans-serif;
+
+  cursor:pointer;
+  user-select:none;
+
+  color:#5c4b2f;
+
+  box-shadow:
+    0 8px 0 #d8c49a,
+    0 12px 20px rgba(0,0,0,0.2);
+
+  transition:all 0.15s ease;
+}
+
+/* HOVER */
+.card:hover{
+  transform:translateY(2px);
+
+  box-shadow:
+    0 6px 0 #d8c49a,
+    0 10px 18px rgba(0,0,0,0.22);
+}
+
+/* PUSH EFFECT */
+.card:active{
+  transform:translateY(8px);
+
+  box-shadow:
+    0 0px 0 #d8c49a,
+    0 4px 10px rgba(0,0,0,0.18);
+}
+
+.card span{
+  display:block;
+  font-size:60px;
+  margin-bottom:12px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+}
+.firework{
+    position:fixed;
+    width:20px;
+    height:20px;
+    pointer-events:none;
+    z-index:99999;
+    animation:explode 0.8s ease-out forwards;
+}
+@keyframes explode{
+    0%{
+        transform:translate(0,0) scale(1);
+        opacity:1;
+    }
+    100%{
+        transform:
+            translate(var(--x),var(--y))
+            scale(0);
+        opacity:0;
+    }
+}
+</style>
+<body>
+
+<div class="header">
+  <h2><img src="book25.png" class="card-icon"> Quarter 3 - Week 4</h2>
+  <button onclick="goBack(this)">⬅ Back</button>
+</div>
+
+<div class="container">
+
+<div class="cards">
+
+  <div class="card" onclick="openLE(this)">
+    <img src="books.png" class="card-icon"><br>
+    Learning Experience
+  </div>
+
+  <div class="card" onclick="openLAS(this)">
+    <img src="sheet.png" class="card-icon"><br>
+    Learning Activity Sheets
+  </div>
+
+</div>
+
+</div>
+
+<script>
+
+function goBack(btn){
+  playEffects(btn);
+
+  setTimeout(()=>{
+    window.location.href="quarter3.html";
+  },1200);
+}
+
+function openLE(btn){
+  playEffects(btn);
+
+  setTimeout(()=>{
+    window.location.href="quarter3week4_le.html";
+  },1200);
+}
+
+function openLAS(btn){
+  playEffects(btn);
+
+  setTimeout(()=>{
+    window.location.href="quarter3week4_las.html";
+  },1200);
+}
+
+function playEffects(element){
+
+  const sound =
+    document.getElementById("clickSound");
+
+  if(sound){
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play();
+  }
+
+  if(!element) return;
+
+  const rect =
+    element.getBoundingClientRect();
+
+  const stars =
+    ["⭐","🌟","✨","💫"];
+
+  for(let i=0;i<35;i++){
+
+    const particle =
+      document.createElement("div");
+
+    particle.className = "firework";
+
+    particle.innerHTML =
+      stars[
+        Math.floor(
+          Math.random() * stars.length
+        )
+      ];
+
+    particle.style.fontSize =
+      (18 + Math.random()*16) + "px";
+
+    particle.style.color =
+      `hsl(${Math.random()*360},100%,60%)`;
+
+    particle.style.left =
+      (rect.left + rect.width/2) + "px";
+
+    particle.style.top =
+      (rect.top + rect.height/2) + "px";
+
+    const angle =
+      Math.random() * 360;
+
+    const distance =
+      80 + Math.random()*120;
+
+    particle.style.setProperty(
+      "--x",
+      Math.cos(angle*Math.PI/180)
+      * distance + "px"
+    );
+
+    particle.style.setProperty(
+      "--y",
+      Math.sin(angle*Math.PI/180)
+      * distance + "px"
+    );
+
+    document.body.appendChild(
+      particle
+    );
+
+    setTimeout(()=>{
+      particle.remove();
+    },800);
+  }
+}
+</script>
+<audio id="clickSound" preload="auto">
+  <source src="button-sound-effect.mp3" type="audio/mpeg">
+</audio>
+
+<script src="sidebar.js?v=20261108-week-menu-wrap-v1"></script>
+</body>
+</html>
